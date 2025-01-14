@@ -1,49 +1,74 @@
+const playerDisplayScore= document.querySelector("#player-score")
+const cpuDisplayScore = document.querySelector("#cpu-score")
+const tieDisplayScore = document.querySelector("#tie-score")
+const results = document.querySelector("#result")
+let playerScore = 0
+let cpuScore = 0
+let tieScore = 0
 
-let humanScore = 0;
-let computerScore = 0;
 
-// computer options
-let choices = ['rock', 'paper', 'scissors'];
 
+
+function getComputerChoice() {
+  let options= ["rock", "paper", "scissors"]
+   return options [Math.floor(Math.random() * 3)]
+}
+
+// 
+function playRound(playerSelection, computerSelection){
  
+  if(playerSelection === computerSelection) {
+    tieScore++
+    results.textContent = `You tie. both chose ${playerSelection}`
+  
+  } else if (playerSelection === "rock" && computerSelection === "paper" ||
+    playerSelection === "paper" && computerSelection === "scissors"  ||
+    playerSelection === "scissors" && computerSelection === "rock"){
+      cpuScore++
+      results.textContent = `You lose. You chose ${playerSelection}. Cpu chose ${computerSelection}`
 
-   
-    function playRound(){
-      let  humanChoice = prompt('Choose rock, paper, scissors');
-        
-      let computerChoice = choices[Math.floor(Math.random() * 3)]
+  } else {
+    playerScore++
+    results.textContent = `You win. You chose ${playerSelection}. Cpu chose ${computerSelection}`
+  }
 
-     
-      if(humanChoice === computerChoice){
-        console.log (`you tie: human Score is ${humanScore}
-         computer score is ${computerScore}`);
-       
-   
-    }else if (humanChoice === 'rock' && computerChoice === 'paper' ||
-           humanChoice === 'scissors' && computerChoice === 'rock' ||
-           humanChoice === 'paper' && computerChoice === 'scissors'){
-            console.log (`you lose: human Score is ${humanScore} 
-            computer score is ${computerScore}`);
-          computerScore++;
+  finalScore()
 
-     }else {
-            console.log(`you win: human Score is ${humanScore} 
-            computer score is ${computerScore}`); 
-            humanScore++; 
-        }
+    playerDisplayScore.textContent = playerScore
+    cpuDisplayScore.textContent = cpuScore
+    tieDisplayScore.textContent = tieScore
 
-    }
 
-        for(let i = 0; i < 5; i++){
-           
-            playRound();
-        
-        }if(humanScore > computerScore ){
-            console.log('You win the game');
-        
-        }else if(humanScore < computerScore ){
-                console.log('You lose the game');
-        
-        } else {
-            console.log('you tie the game');
-        }
+}
+
+function resetScore () {
+  playerScore = 0
+  cpuScore = 0
+  tieScore = 0
+}
+
+
+function finalScore () {
+
+  if(playerScore === 5){
+    resetScore()
+    results.textContent = "You win the game"
+ 
+  } else if(cpuScore === 5){
+    resetScore()
+    results.textContent = "The cpu win the game"
+  }
+}
+
+
+
+
+const buttons = document.querySelectorAll("button")
+
+buttons.forEach((button) => {
+button.addEventListener('click', () =>{
+ let playerSelection = button.id
+ let computerSelection = getComputerChoice()
+ playRound(playerSelection, computerSelection)
+  })
+})
